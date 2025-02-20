@@ -1,5 +1,3 @@
-const { DataTypes, Sequelize } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
   const Answer = sequelize.define("answer", {
     answerText: {
@@ -7,10 +5,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     likes: {
-      types: DataTypes.INTEGER,
-      defaultValue: 0
-    }
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   });
-   
   return Answer;
 };

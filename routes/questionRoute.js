@@ -1,6 +1,7 @@
 const {
   renderAskQuestionPage,
   askQuestion,
+  renderSingleQuestionPage,
 } = require("../controllers/questionController");
 const { isAuthenticated } = require("../middleware/isAuthenticated");
 

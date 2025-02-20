@@ -1,4 +1,3 @@
-const { questions } = require("../model");
 const { questions, users, answers, sequelize } = require("../model");
 const { cloudinary } = require("../cloudinary/index");
 
@@ -32,4 +31,48 @@ exports.getAllQuestion = async (req, res) => {
       model: users,
     },
   ];
+};
+
+exports.renderSingleQuestionPage = async (req, res) => {
+  const { id } = req.params;
+  const data = await questions.findAll({
+    where: {
+      id: id,
+    },
+    include: [
+      {
+        model: users,
+        attributes: ["username"],
+      },
+    ],
+  });
+  let likes;
+  let count = 0;
+  try {
+    likes = await sequelize.query(`SELECT * FROM likes_${id}`, {
+      type: QueryType.SELECT,
+    });
+    if (likes.length) {
+      count = likes.length;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  const answerData = await answers.findAll({
+    where: {
+      questionId: id,
+    },
+    include: [
+      {
+        model: users,
+        attributes: ["username"],
+      },
+    ],
+  });
+  res.render("./questions/singleQuestion", {
+    data,
+    answers: answersData,
+    likes: count,
+  });
 };

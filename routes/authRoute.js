@@ -9,6 +9,7 @@ const {
   renderResetPassword,
   handleResetPassword,
   logout,
+  renderVerifyOtpPage,
 } = require("../controllers/authController");
 
 const router = require("express").Router();

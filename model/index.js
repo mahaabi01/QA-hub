@@ -1,7 +1,7 @@
 const dbConfig = require("../config/dbConfig");
 const { Sequelize, DataTypes } = require("sequelize");
 
-// la sequelize yo config haru lag ani database connect gardey vaneko hae
+// take these configurations and connect to database
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
@@ -32,10 +32,10 @@ db.sequelize = sequelize;
 
 // updating entries here - we have created user model so we have to update it here
 db.users = require("./userModel.js")(sequelize, DataTypes);
-db.blogs = require("./blogModel.js")(sequelize, DataTypes);
-db.answers = require("./answerModel.js")(sequelize, DataTypes);
 db.questions = require("./questionModel.js")(sequelize, DataTypes);
+db.answers = require("./answerModel.js")(sequelize, DataTypes);
 
+//relationship between questions and users
 db.users.hasMany(db.questions);
 db.questions.belongsTo(db.users);
 
@@ -46,7 +46,7 @@ db.users.hasMany(db.answers);
 db.answers.belongsTo(db.users);
 
 // this code ensures that your database is synchronized with the models defined in your Sequelize application.
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("yes re-sync done");
 });
 
